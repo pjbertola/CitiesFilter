@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CityModel {
+class CityModel: Identifiable {
     let nameTitle: String
     let id: Int
     let coordinate: CoordinateModel

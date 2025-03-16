@@ -25,7 +25,7 @@ struct CitiesFilterApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CitiesListBuilder().getView()
         }
         .modelContainer(sharedModelContainer)
     }
