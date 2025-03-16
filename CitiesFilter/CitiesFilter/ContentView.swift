@@ -37,6 +37,12 @@ struct ContentView: View {
         } detail: {
             Text("Select an item")
         }
+//        .task {
+//            let cities = await CitiesRepositoryDefault()
+//                .getCities()
+//            print(cities.count)
+//                
+//        }
     }
 
     private func addItem() {
