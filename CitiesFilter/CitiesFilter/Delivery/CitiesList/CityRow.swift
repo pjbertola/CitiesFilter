@@ -13,10 +13,12 @@ struct CityRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(city.nameTitle)
+                    .font(.title)
                 Text(city.coordinateDescription)
+                    .font(.subheadline)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(5)
+            .padding(1)
+            Spacer()
             HStack {
                 Menu {
                     Text("Info: " + city.nameTitle)
@@ -28,8 +30,7 @@ struct CityRow: View {
                     
                 }
             }
-            .frame(maxWidth: .leastNonzeroMagnitude, alignment: .trailing)
-            .padding(5)
+            .padding(1)
         }
     }
 }
