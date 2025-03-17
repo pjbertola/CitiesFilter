@@ -19,7 +19,7 @@ struct CitiesListView: View {
                     NavigationLink {
                         CityMapView(city: city)
                     } label: {
-                        CityRow(city: city)
+                        CityRow().environment(city)
                     }
                 }
             }

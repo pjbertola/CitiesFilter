@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct CityRow: View {
-    var city: CityModel
+    @Environment(CityModel.self) var city
+
     var body: some View {
+        @Bindable var city = city
         HStack {
             VStack(alignment: .leading) {
                 Text(city.nameTitle)
@@ -24,11 +26,10 @@ struct CityRow: View {
                     Text("Info: " + city.nameTitle)
                 } label: {
                     Image(systemName: "ellipsis")
+                        .frame(width: 30, height: 30)
                 }
+                FavoriteButton(isSet: $city.isFavorite)
 
-                Button("", systemImage: "star") {
-                    
-                }
             }
             .padding(1)
         }
@@ -36,6 +37,6 @@ struct CityRow: View {
 }
 
 #Preview {
-    let city: CityModel = .init(name: "Madrid", country: "ES", id: 1, coordinate: .init(longitude: 40.416775, latitude: -3.703790))
-    CityRow(city: city)
+    let city = CityModel(name: "Madrid", country: "ES", id: 1, coordinate: .init(longitude: 40.416775, latitude: -3.703790))
+    CityRow().environment(city)
 }

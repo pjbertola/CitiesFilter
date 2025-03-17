@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 class CityModel: Identifiable {
     let nameTitle: String
     let id: Int
@@ -14,11 +15,17 @@ class CityModel: Identifiable {
     var coordinateDescription: String {
         "Latitude: " + coordinate.latitude.description + " - Longitude:" + coordinate.longitude.description
     }
-    init(name: String, country: String, id: Int, coordinate: CoordinateModel) {
+    var isFavorite: Bool
+
+    init(name: String,
+         country: String,
+         id: Int,
+         coordinate: CoordinateModel,
+         isFavorite: Bool = false) {
         self.nameTitle = name + ", " + country
         self.id = id
         self.coordinate = coordinate
-
+        self.isFavorite = isFavorite
     }
 }
 
