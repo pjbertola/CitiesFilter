@@ -10,12 +10,24 @@ import SwiftUI
 struct CitiesListView: View {
     @State var cities: [CityModel] = []
     @State private var visibility: NavigationSplitViewVisibility = .all
+    @State private var showFavoritesOnly = false
+    var filteredCities: [CityModel] {
+        cities.filter { city in
+            (!showFavoritesOnly || city.isFavorite)
+        }
+    }
     var repository: CitiesRepository
 
     var body: some View {
         NavigationSplitView(columnVisibility: $visibility) {
             List {
-                ForEach(cities, id: \.id) { city in
+                Group {
+                    Toggle(isOn: $showFavoritesOnly) {
+                        Text("Favorites only")
+                            .bold()
+                    }
+                }
+                ForEach(filteredCities, id: \.id) { city in
                     NavigationLink {
                         CityMapView(city: city)
                     } label: {
