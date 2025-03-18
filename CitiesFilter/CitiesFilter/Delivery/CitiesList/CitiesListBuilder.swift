@@ -7,8 +7,10 @@
 
 import Foundation
 
+
+
 class CitiesListBuilder {
-    func getView() -> CitiesListView {
-        CitiesListView(repository: CitiesRepositoryDefault())
+    @MainActor func getView() -> CitiesListView {
+        CitiesListView(repository: CitiesRepositoryBuilder().getRepository())
     }
 }

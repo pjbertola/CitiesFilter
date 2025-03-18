@@ -6,35 +6,30 @@
 //
 
 import Foundation
+import SwiftData
 
-@Observable
-class CityModel: Identifiable {
-    let nameTitle: String
-    let id: Int
-    let coordinate: CoordinateModel
+//@Observable
+@Model
+final class CityModel: Identifiable {
+    private(set) var nameTitle: String
+    private(set) var id: Int
+    private(set) var latitude: Double
+    private(set) var longitude: Double
     var coordinateDescription: String {
-        "Latitude: " + coordinate.latitude.description + " - Longitude:" + coordinate.longitude.description
+        "Latitude: " + latitude.description + " - Longitude:" + longitude.description
     }
     var isFavorite: Bool
 
     init(name: String,
          country: String,
          id: Int,
-         coordinate: CoordinateModel,
+         latitude: Double,
+         longitude: Double,
          isFavorite: Bool = false) {
         self.nameTitle = name + ", " + country
         self.id = id
-        self.coordinate = coordinate
-        self.isFavorite = isFavorite
-    }
-}
-
-class CoordinateModel {
-    let longitude: Double
-    let latitude: Double
-
-    init(longitude: Double, latitude: Double) {
-        self.longitude = longitude
         self.latitude = latitude
+        self.longitude = longitude
+        self.isFavorite = isFavorite
     }
 }

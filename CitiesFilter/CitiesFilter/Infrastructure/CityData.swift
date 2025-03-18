@@ -24,7 +24,8 @@ struct CityData: Decodable {
         CityModel(name: name,
                   country: country,
                   id: id,
-                  coordinate: coordinate.toModel())
+                  latitude: coordinate.latitude,
+                  longitude: coordinate.longitude)
     }
 }
 
@@ -35,10 +36,6 @@ struct CoordinateData: Decodable {
     enum CodingKeys: String, CodingKey {
         case longitude = "lon"
         case latitude = "lat"
-    }
-
-    func toModel() -> CoordinateModel {
-        CoordinateModel(longitude: longitude, latitude: latitude)
     }
 }
 

@@ -11,7 +11,7 @@ import MapKit
 struct CityMapView: View {
     var city: CityModel
     var body: some View {
-        let coordinates = CLLocationCoordinate2D(latitude: city.coordinate.latitude, longitude: city.coordinate.longitude)
+        let coordinates = CLLocationCoordinate2D(latitude: city.latitude, longitude: city.longitude)
         Map() {
             Marker(city.nameTitle, coordinate: coordinates)
         }
@@ -19,6 +19,6 @@ struct CityMapView: View {
 }
 
 #Preview {
-    let city: CityModel = .init(name: "Madrid", country: "ES", id: 1, coordinate: .init(longitude: 40.416775, latitude: -3.703790))
+    let city: CityModel = .init(name: "Madrid", country: "ES", id: 1, latitude: -3.703790, longitude: 40.416775)
     CityMapView(city: city)
 }

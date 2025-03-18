@@ -19,7 +19,7 @@ struct CitiesListView: View {
                     NavigationLink {
                         CityMapView(city: city)
                     } label: {
-                        CityRow().environment(city)
+                        CityRow(repository: repository).environment(city)
                     }
                 }
             }
@@ -29,14 +29,14 @@ struct CitiesListView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .task {
-            cities = await CitiesRepositoryDefault()
+            let unsortedCities = await repository
                 .getCities()
-            print(cities.count)
-
+            cities = unsortedCities.sorted { $0.nameTitle < $1.nameTitle }
+            print("cities: " + String(cities.count))
         }
     }
 }
 
 #Preview {
-    CitiesListView(repository: CitiesRepositoryDefault())
+    CitiesListView(repository: CitiesRepositoryBuilder().getRepository())
 }
