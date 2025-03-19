@@ -11,9 +11,11 @@ struct CitiesListView: View {
     @State var cities: [CityModel] = []
     @State private var visibility: NavigationSplitViewVisibility = .all
     @State private var showFavoritesOnly = false
-    @State var showLoading = false
+    @State private var showLoading = false
+    @State private var searchText: String = ""
+
     var filteredCities: [CityModel] {
-        let tempList = viewModel.filter(text: "", hasToBeFavorite: showFavoritesOnly)
+        let tempList = viewModel.filter(text: searchText, hasToBeFavorite: showFavoritesOnly)
         return tempList.filter { city in
             (!showFavoritesOnly || city.isFavorite)
         }
@@ -41,6 +43,7 @@ struct CitiesListView: View {
                     }
                 }
                 .navigationTitle("Cities")
+                .searchable(text: $searchText)
             }
             
         } detail: {
