@@ -15,15 +15,12 @@ protocol CitiesRepository {
 }
 
 class CitiesRepositoryDefault: CitiesRepository {
-//    @Environment(\.modelContext) private var modelContext
-//    @Query private var cities: [CityModel] = []
     private var cities: [CityModel] = []
     private let citiesService: CitiesService
     private let databaseManager: DatabaseManager
     init(citiesService: CitiesService,
          databaseManager: DatabaseManager) {
         self.citiesService = citiesService
-//        modelContext.autosaveEnabled = false
         self.databaseManager = databaseManager
     }
 
@@ -37,9 +34,6 @@ class CitiesRepositoryDefault: CitiesRepository {
 
         do {
             let citiesData = try await citiesService.getCities()
-
-//            citiesData.forEach { modelContext.insert($0.toModel()) }
-//            try modelContext.save()
             cities = citiesData.map { $0.toModel() }
             let result = await self.databaseManager.append(items: cities)
             print("databaseManager.append")

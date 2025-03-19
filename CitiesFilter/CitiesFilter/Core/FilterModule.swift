@@ -10,6 +10,7 @@ import Foundation
 protocol FilterModule {
     func setup(with cities: [CityModel])
     func filter(text: String, hasToBeFavorite: Bool) -> [CityModel]
+    func updateFavoriteStatus(for city: CityModel)
 }
 
 class FilterModuleDefault: FilterModule {
@@ -20,7 +21,7 @@ class FilterModuleDefault: FilterModule {
     private let maxKeyLength: Int = 2
 
     func setup(with cities: [CityModel]) {
-        self.allCities = cities.sorted { $0.nameTitle < $1.nameTitle }
+        self.allCities = cities
         
         cities.forEach {
             // build a Dictionary with all the cities
@@ -49,6 +50,15 @@ class FilterModuleDefault: FilterModule {
                                         hasToBeFavorite: hasToBeFavorite)
         // return filtered cities
         return filteredCities.sorted { $0.nameTitle < $1.nameTitle }
+    }
+
+    func updateFavoriteStatus(for city: CityModel) {
+        if city.isFavorite {
+            favoritesSet.insert(getCityKey(city: city))
+        } else {
+            favoritesSet.remove(getCityKey(city: city))
+        }
+
     }
 }
 

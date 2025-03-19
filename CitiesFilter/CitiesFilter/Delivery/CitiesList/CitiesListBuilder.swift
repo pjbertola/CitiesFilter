@@ -11,6 +11,6 @@ import Foundation
 
 class CitiesListBuilder {
     @MainActor func getView() -> CitiesListView {
-        CitiesListView(repository: CitiesRepositoryBuilder().getRepository())
+        CitiesListView(viewModel: CitiesListViewModelBuilder().getViewModel())
     }
 }

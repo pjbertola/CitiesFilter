@@ -13,11 +13,12 @@ struct CitiesListView: View {
     @State private var showFavoritesOnly = false
     @State var showLoading = false
     var filteredCities: [CityModel] {
-        cities.filter { city in
+        let tempList = viewModel.filter(text: "", hasToBeFavorite: showFavoritesOnly)
+        return tempList.filter { city in
             (!showFavoritesOnly || city.isFavorite)
         }
     }
-    var repository: CitiesRepository
+    var viewModel: CitiesListViewModel
 
     var body: some View {
         NavigationSplitView(columnVisibility: $visibility) {
@@ -35,7 +36,7 @@ struct CitiesListView: View {
                         NavigationLink {
                             CityMapView(city: city)
                         } label: {
-                            CityRow(repository: repository).environment(city)
+                            CityRow(viewModel: viewModel).environment(city)
                         }
                     }
                 }
@@ -52,9 +53,9 @@ struct CitiesListView: View {
         .navigationSplitViewStyle(.balanced)
         .task {
             showLoading = true
-            let unsortedCities = await repository
+            cities = await viewModel
                 .getCities()
-            cities = unsortedCities.sorted { $0.nameTitle < $1.nameTitle }
+            cities.sort { $0.nameTitle < $1.nameTitle }
             print("cities: " + String(cities.count))
             showLoading = false
         }
@@ -62,5 +63,5 @@ struct CitiesListView: View {
 }
 
 #Preview {
-    CitiesListView(repository: CitiesRepositoryBuilder().getRepository())
+    CitiesListView(viewModel: CitiesListViewModelBuilder().getViewModel())
 }

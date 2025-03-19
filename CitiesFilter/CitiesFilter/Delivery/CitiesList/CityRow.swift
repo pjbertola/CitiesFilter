@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CityRow: View {
     @Environment(CityModel.self) var city
-    var repository: CitiesRepository
+    var viewModel: CitiesListViewModelUpdater
 
     var body: some View {
         @Bindable var city = city
+
         HStack {
             VStack(alignment: .leading) {
                 Text(city.nameTitle)
@@ -29,7 +30,9 @@ struct CityRow: View {
                     Image(systemName: "ellipsis")
                         .frame(width: 30, height: 30)
                 }
-                FavoriteButton(isSet: $city.isFavorite, repository: repository)
+                FavoriteButton(isSet: $city.isFavorite) {
+                    viewModel.updateModel(city: city)
+                }
 
             }
             .padding(1)
@@ -39,5 +42,5 @@ struct CityRow: View {
 
 #Preview {
     let city = CityModel(name: "Madrid", country: "ES", id: 1, latitude: -3.703790, longitude: 40.416775)
-    CityRow(repository: CitiesRepositoryBuilder().getRepository()).environment(city)
+    CityRow(viewModel: CitiesListViewModelBuilder().getViewModel()).environment(city)
 }

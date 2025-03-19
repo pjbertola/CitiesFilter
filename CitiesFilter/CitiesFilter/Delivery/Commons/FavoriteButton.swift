@@ -9,12 +9,12 @@ import SwiftUI
 
 struct FavoriteButton: View {
     @Binding var isSet: Bool
-    var repository: CitiesRepository
+    var didChange: (() -> Void)?
     var body: some View {
         Button {
             isSet.toggle()
+            didChange?()
             print("Toggle " + String(isSet))
-            repository.saveContext()
         } label: {
             Label("Toggle Favorite", systemImage: isSet ? "star.fill" : "star")
                 .labelStyle(.iconOnly)
@@ -27,5 +27,5 @@ struct FavoriteButton: View {
 }
 
 #Preview {
-    FavoriteButton(isSet: .constant(true), repository: CitiesRepositoryBuilder().getRepository())
+    FavoriteButton(isSet: .constant(true))
 }
