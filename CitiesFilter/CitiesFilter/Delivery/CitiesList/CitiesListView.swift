@@ -28,9 +28,14 @@ struct CitiesListView: View {
                 List {
                     Group {
                         Toggle(isOn: $showFavoritesOnly) {
-                            Text("Favorites only")
-                                .bold()
+                            HStack {
+                                Text("Favorite only")
+                                    .bold()
+                                Spacer()
+                                Image(systemName: showFavoritesOnly ? "star.fill" : "star")
+                            }
                         }
+                        .toggleStyle(.button)
                     }
                     ForEach(filteredCities, id: \.id) { city in
                         NavigationLink {
@@ -43,6 +48,7 @@ struct CitiesListView: View {
                 .navigationTitle("Cities")
                 .searchable(text: $searchText)
                 .animation(.default, value: filteredCities)
+                .accessibilityIdentifier("CitiesList")
             }
             
         } detail: {

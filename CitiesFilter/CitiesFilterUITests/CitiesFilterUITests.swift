@@ -10,34 +10,72 @@ import XCTest
 final class CitiesFilterUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     @MainActor
-    func testExample() throws {
+    func testFavorite() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
+        app.launchEnvironment["UI_Testing_Enabled"] = "true"
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let cityList = app.collectionViews["CitiesList"]
+        //Alabama Cell -> press favorite
+        cityList.cells.element(boundBy: 1).buttons["Toggle Favorite"].tap()
+        print("pjb cityList.cells: " + String(cityList.cells.count))
+
+        // Press Favorite only
+        let toggledFavoriteCell = cityList.cells.element(boundBy: 0)
+        let switchFav = toggledFavoriteCell.switches["Favorite only"]
+        switchFav.tap()
+        
+        // Check if only shows Alabama and Favorite toggle
+        XCTAssertTrue(cityList.cells.count == 2)
+        
+        //Alabama Cell -> press favorite again.
+        cityList.cells.element(boundBy: 1).buttons["Toggle Favorite"].tap()
+        print("pjb cityList.cells: " + String(cityList.cells.count))
+
+        // Now only has to shows Favorite toggle
+        XCTAssertTrue(cityList.cells.count == 1)
     }
 
     @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    func testGoToMapView() throws {
+        let app = XCUIApplication()
+        app.launchEnvironment["UI_Testing_Enabled"] = "true"
+        app.launch()
+
+        //Alabama Cell
+        let cell = app.collectionViews.children(matching: .cell).element(boundBy: 1)
+        cell.tap()
+        XCTAssertTrue(app.otherElements["Alabama, US"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.maps.element.waitForExistence(timeout: 3))
+    }
+    func testFilter() throws {
+        let app = XCUIApplication()
+        app.launchEnvironment["UI_Testing_Enabled"] = "true"
+        app.launch()
+        let cityList = app.collectionViews["CitiesList"]
+
+        // Check if there are 5 cities and favorite toggle
+        XCTAssertTrue(cityList.cells.count == 6)
+
+        // Filter by "al"
+        let citiesNavigationBar = XCUIApplication().navigationBars["Cities"]
+        let searchSearchField = citiesNavigationBar.searchFields["Search"]
+        searchSearchField.tap()
+        searchSearchField.typeText("al")
+
+        // Check if there are 2 cities and favorite toggle
+        XCTAssertTrue(cityList.cells.count == 3)
+
+        // Clear the search
+        searchSearchField.buttons["Clear text"].tap()
+
+        // Check if there are avery city
+        XCTAssertTrue(cityList.cells.count == 6)
     }
 }
+
