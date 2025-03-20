@@ -17,7 +17,7 @@ struct CityRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(city.nameTitle)
-                    .font(.title)
+                    .font(.headline)
                 Text(city.coordinateDescription)
                     .font(.subheadline)
             }

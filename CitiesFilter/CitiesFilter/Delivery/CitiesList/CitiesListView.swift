@@ -16,9 +16,7 @@ struct CitiesListView: View {
 
     var filteredCities: [CityModel] {
         let tempList = viewModel.filter(text: searchText, hasToBeFavorite: showFavoritesOnly)
-        return tempList.filter { city in
-            (!showFavoritesOnly || city.isFavorite)
-        }
+        return (showFavoritesOnly ? tempList.filter { city in city.isFavorite } : tempList)
     }
     var viewModel: CitiesListViewModel
 
@@ -44,6 +42,7 @@ struct CitiesListView: View {
                 }
                 .navigationTitle("Cities")
                 .searchable(text: $searchText)
+                .animation(.default, value: filteredCities)
             }
             
         } detail: {
