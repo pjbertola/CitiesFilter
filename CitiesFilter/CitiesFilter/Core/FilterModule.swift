@@ -107,7 +107,9 @@ private extension FilterModuleDefault {
     /// - Returns: filtered cities
     func filterWith(prefix: String, searcherText: String, hasToBeFavorite: Bool) -> [CityModel] {
         return dictionaryKeys[prefix]?.compactMap {
-            if let city = allCitiesDic[$0], city.nameTitle.lowercased().hasPrefix(searcherText), (!hasToBeFavorite || city.isFavorite) {
+            if $0.lowercased().hasPrefix(searcherText),
+               let city = allCitiesDic[$0],
+               (!hasToBeFavorite || city.isFavorite) {
                 return city
             }
             return nil
