@@ -18,6 +18,7 @@ class CitiesRepositoryDefault: CitiesRepository {
     private var cities: [CityModel] = []
     private let citiesService: CitiesService
     private let databaseManager: DatabaseManager
+
     init(citiesService: CitiesService,
          databaseManager: DatabaseManager) {
         self.citiesService = citiesService

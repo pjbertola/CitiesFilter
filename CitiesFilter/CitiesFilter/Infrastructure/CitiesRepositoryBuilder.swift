@@ -16,7 +16,7 @@ class CitiesRepositoryBuilder {
         if isUITestingEnabled() {
             databaseManager = DatabaseManagerMock()
         }
-        
+
         return CitiesRepositoryDefault(citiesService: CitiesServiceDefault(), databaseManager: databaseManager)
     }
 

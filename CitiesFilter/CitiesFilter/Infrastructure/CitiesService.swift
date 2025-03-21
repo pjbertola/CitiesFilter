@@ -7,20 +7,39 @@
 
 import Foundation
 
+enum CitiesServiceApiClient {
+    case live
+    case mock
+}
 protocol CitiesService {
     func getCities() async throws -> [CityData]
 }
 
 class CitiesServiceDefault: CitiesService {
+    private let apiClient: CitiesServiceApiClient
+
+    init(apiClient: CitiesServiceApiClient = .live) {
+        self.apiClient = apiClient
+    }
+
     func getCities() async throws -> [CityData] {
         var cities: [CityData] = []
-        if let url = CitiesEndpoint().asURL {
+        if let url = getURL() {
             let urlRequest = URLRequest(url: url)
             let (data, _) = try await URLSession.shared.data(for: urlRequest)
             let decoder = JSONDecoder()
             cities = try decoder.decode([CityData].self, from: data)
         }
         return cities
+    }
+
+    private func getURL() -> URL? {
+        switch apiClient {
+        case .live:
+            return CitiesEndpoint().asURL
+        case .mock:
+            return CitiesMockEndpoint().asURL
+        }
     }
 }
 
@@ -29,5 +48,16 @@ struct CitiesEndpoint {
 
     var asURL: URL? {
         URL(string: path)
+    }
+}
+
+struct CitiesMockEndpoint {
+    private let path: String = "cities.json"
+    var asURL: URL? {
+        guard let file = Bundle.main.url(forResource: path, withExtension: nil)
+        else {
+            fatalError("Couldn't find \(path) in main bundle.")
+        }
+        return file
     }
 }

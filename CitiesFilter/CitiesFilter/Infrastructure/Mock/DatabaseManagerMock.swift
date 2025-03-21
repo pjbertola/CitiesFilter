@@ -13,14 +13,16 @@ class DatabaseManagerMock: DatabaseManager {
     var appendItems: [Any] = []
     func append<T>(items: [T]) async -> Result<Bool, any Error> where T : PersistentModel {
         appendCalled = true
-        appendItems.append(items)
+        appendItems = items
         return .success(true)
     }
 
     var fetchItemsCalled = false
+    var fetchItemsUseMocks = true
     func fetchItems<T>() async -> Result<[T], any Error> where T : PersistentModel {
         fetchItemsCalled = true
-        return .success(CityMocks().getCities() as! [T])
+        let cities: [T] = fetchItemsUseMocks ? CityMocks().getCities() as! [T] : []
+        return .success(cities)
     }
 
     var saveContextCalled = false
